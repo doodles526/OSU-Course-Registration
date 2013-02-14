@@ -48,8 +48,8 @@ def parse_course_page(subject, level):
 
     course_table = soup.find(attrs={'id':'ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings'})
 
-    lectures = []
-    recitations = []
+    info['lectures'] = []
+    info['recitations'] = []
 
     for tr in course_table.find_all('tr'):
         cols = tr.find_all('td')
@@ -57,39 +57,36 @@ def parse_course_page(subject, level):
         if len(cols) == 0:
             continue
 
-        time = {}
-        time['term'] = cols[0].text
-        time['crn'] = int(cols[1].text)
-        time['section'] = int(cols[2].text)
-        time['instructor'] = cols[5].text
-
+        time = {
+            'term': cols[0].text,
+            'crn': int(cols[1].text),
+            'section': int(cols[2].text),
+            'instructor': cols[5].text,
+            'location': cols[7].text.strip(),
+            'campus': cols[8].text.strip(),
+            'type': cols[9].text.strip(),
+            'cap': int(cols[11].text),
+            'current': int(cols[12].text),
+            'available': int(cols[13].text),
+            'wl_cap': int(cols[14].text),
+            'wl_current': int(cols[15].text),
+            'wl_available': int(cols[16].text),
+            'fees': cols[18].text.strip(),
+            #'restrictions': cols[19].text.strip(),
+            'notes': cols[20].text.strip()
+        }
+        
         if cols[6].text.find('TBA') < 0:
             time_data = cols[6].text.strip().split(' ')
             time_hours = time_data[1][:4]
             time['days'] = time_data[0]
             time['time_start'] = time_data[1][:4]
             time['time_end'] = time_data[1][5:9]
-        
-        time['location'] = cols[7].text.strip()
-        time['campus'] = cols[8].text.strip()
-        time['type'] = cols[9].text.strip()
-
-        time['cap'] = int(cols[11].text)
-        time['current'] = int(cols[12].text)
-        time['available'] = int(cols[13].text)
-        time['wl_cap'] = int(cols[14].text)
-        time['wl_current'] = int(cols[15].text)
-        time['wl_available'] = int(cols[16].text)
-        time['fees'] = cols[18].text.strip()
-        #time['restrictions'] = cols[19].text.strip()
-        time['notes'] = cols[20].text.strip()
 
         if cols[9].text == 'Lecture':
-            lectures.append(time)
+            info['lectures'].append(time)
         elif cols[9].text == 'Recitation':
-            recitations.append(time)
-
-    print lectures
+            info['recitations'].append(time)
 
     return info
 

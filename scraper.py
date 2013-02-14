@@ -20,7 +20,9 @@ def parse_course_page(subject, level):
         'short_name': '%s%i' % (subject, level),
         'level': level,
         'level_format': num_to_str(level),
-        'subject': subject
+        'subject': subject,
+        'lectures': [],
+        'recitations': []
     }
 
     content = read_page(URL_OSU_CATALOG % (subject, num_to_str(level)))
@@ -49,9 +51,6 @@ def parse_course_page(subject, level):
     info['description'] = re.sub('(?:<span.+[^(?:</span>)]*</span>)|(?:\s{2,})', ' ', info['description'])
 
     course_table = soup.find(attrs={'id':'ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings'})
-
-    info['lectures'] = []
-    info['recitations'] = []
 
     for tr in course_table.find_all('tr'):
         cols = tr.find_all('td')
@@ -102,9 +101,9 @@ def parse_course_page(subject, level):
                     'date': tfont[2 * lfont.index('GRP FNL') + 1]
                 }
 
-        if cols[9].text == 'Lecture':
+        if time['type'] == 'Lecture':
             info['lectures'].append(time)
-        elif cols[9].text == 'Recitation':
+        elif time['type'] == 'Recitation':
             info['recitations'].append(time)
 
     return info

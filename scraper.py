@@ -1,5 +1,3 @@
-import io
-import json
 import MySQLdb
 import re
 import sys
@@ -127,10 +125,18 @@ def store_courses(courses):
         course['lectures'] = None
         course['recitations'] = None
 
-        cursor.execute("""INSERT INTO classes VALUES (
-            NULL, %(subject)s, %(level)s, %(level_format)s,
-            %(short_name)s, %(full_name)s, %(description)s
-        )""", course)
+        cursor.execute("""SELECT COUNT(*)
+            FROM classes
+            WHERE subject = %(subject)s AND level = %(level)s
+        """, course)
+
+        (rows,) = cursor.fetchone()
+
+        if rows == 0:
+            cursor.execute("""INSERT INTO classes VALUES (
+                NULL, %(subject)s, %(level)s, %(level_format)s,
+                %(short_name)s, %(full_name)s, %(description)s
+            )""", course)
 
     db.commit()
 

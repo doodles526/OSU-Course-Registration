@@ -19,8 +19,7 @@ def parse_course_page(subject, level):
         'level': level,
         'level_format': num_to_str(level),
         'subject': subject,
-        'lectures': [],
-        'recitations': []
+        'times': []
     }
 
     content = read_page(URL_OSU_CATALOG % (subject, num_to_str(level)))
@@ -99,10 +98,7 @@ def parse_course_page(subject, level):
                     'date': tfont[2 * lfont.index('GRP FNL') + 1]
                 }
 
-        if time['type'] == 'Lecture':
-            info['lectures'].append(time)
-        elif time['type'] == 'Recitation':
-            info['recitations'].append(time)
+        info['times'].append(time)
 
     return info
 
@@ -117,20 +113,59 @@ def cycle_courses(subject, level):
 
     return courses
 
-def store_courses(courses):
-    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='', db='osu_classes')
+def update_course_times(db, courses, class_id):
+    cursor = db.cursor()
+
+    for course in courses:
+        course['class_id'] = class_id
+
+        cursor.execute("""SELECT COUNT(*), class_time_id
+            FROM class_times
+            WHERE class_id = %(class_id)s AND section = %(section)s AND
+                crn = %(crn)s AND term = %(term)s
+        """, course)
+
+        (rows,id,) = cursor.fetchone()
+
+        if rows == 0:
+            course['restrictions'] = ''
+            (course['midterm_start'], course['midterm_end'],
+                course['final_start'], course['final_end']) = ('0000-00-00 00:00:00', '0000-00-00 00:00:00', 
+                '0000-00-00 00:00:00', '0000-00-00 00:00:00')
+            cursor.execute("""INSERT INTO class_times VALUES (
+                NULL, %(class_id)s, %(term)s, %(crn)s, %(section)s, %(instructor)s,
+                %(days)s, %(time_start)s, %(time_end)s, %(campus)s, %(type)s,
+                %(cap)s, %(current)s, %(available)s, %(wl_cap)s, %(wl_current)s,
+                %(wl_available)s, %(fees)s, %(restrictions)s, %(notes)s,
+                %(midterm_start)s, %(midterm_end)s, %(final_start)s, %(final_end)s
+            )""", course)
+        else:
+            course['id'] = id
+
+            cursor.execute("""UPDATE class_times
+                SET 
+                    instructor = %(instructor)s, days = %(days)s,
+                    time_start = %(time_start)s, time_end = %(time_end)s,
+                    current = %(current)s, available = %(available)s,
+                    wl_cap = %(wl_cap)s, wl_current = %(wl_current)s,
+                    wl_available = %(wl_available)s, fees = %(fees)s,
+                    notes = %(notes)s
+                WHERE class_time_id = %(id)s
+            """, course)
+
+def store_courses(db, courses):
     cursor = db.cursor()
 
     for course in courses:
         course['lectures'] = None
         course['recitations'] = None
 
-        cursor.execute("""SELECT COUNT(*)
+        cursor.execute("""SELECT COUNT(*), class_id
             FROM classes
             WHERE subject = %(subject)s AND level = %(level)s
         """, course)
 
-        (rows,) = cursor.fetchone()
+        (rows,id,) = cursor.fetchone()
 
         if rows == 0:
             cursor.execute("""INSERT INTO classes VALUES (
@@ -138,10 +173,17 @@ def store_courses(courses):
                 %(short_name)s, %(full_name)s, %(description)s
             )""", course)
 
+            cursor.execute("""SELECT class_id
+                FROM classes
+                WHERE subject = %(subject)s AND level = %(level)s
+            """, course)
+
+            (id,) = cursor.fetchone()
+
+        update_course_times(db, course['times'], id)
+
     db.commit()
 
-def update_course_times(courses):
-    ""
 
 def main():
     if len(sys.argv) < 3:
@@ -152,8 +194,10 @@ def main():
 
     print 'Scraping catalog for subject %s starting at %s' % (subject, level)
 
+    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='', db='osu_classes')
+
     courses = cycle_courses(subject, level)
-    store_courses(courses)
+    store_courses(db, courses)
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -97,6 +97,10 @@ def parse_course_page(subject, level):
                     'time': tfont[2 * lfont.index('GRP FNL')][2:],
                     'date': tfont[2 * lfont.index('GRP FNL') + 1]
                 }
+        else:
+            time['days'] = 'TBA'
+            time['time_start'] = '0000'
+            time['time_end'] = '0000'
 
         info['times'].append(time)
 

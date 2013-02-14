@@ -1,3 +1,5 @@
+import io
+import json
 import MySQLdb
 import re
 import sys
@@ -75,13 +77,30 @@ def parse_course_page(subject, level):
             #'restrictions': cols[19].text.strip(),
             'notes': cols[20].text.strip()
         }
-        
+
         if cols[6].text.find('TBA') < 0:
-            time_data = cols[6].text.strip().split(' ')
-            time_hours = time_data[1][:4]
+            tfont = str(cols[6].find('font'))
+            tfont = tfont[17:len(tfont) - 7].strip().split('<br/>')
+            lfont = str(cols[7].find('font'))
+            lfont = lfont[17:len(lfont) - 7].strip().split('<br/><br/>')
+
+            time_data = tfont[0].split(' ')
+            time_hours = time_data[1]
             time['days'] = time_data[0]
             time['time_start'] = time_data[1][:4]
             time['time_end'] = time_data[1][5:9]
+
+            if 'GRP MID' in lfont:
+                time['midterm'] = {
+                    'time': tfont[2 * lfont.index('GRP MID')][2:],
+                    'date': tfont[2 * lfont.index('GRP MID') + 1]
+                }
+
+            if 'GRP FNL' in lfont:
+                time['final'] = {
+                    'time': tfont[2 * lfont.index('GRP FNL')][2:],
+                    'date': tfont[2 * lfont.index('GRP FNL') + 1]
+                }
 
         if cols[9].text == 'Lecture':
             info['lectures'].append(time)
@@ -91,11 +110,16 @@ def parse_course_page(subject, level):
     return info
 
 def cycle_courses(subject, level):
+    courses = []
+
     for i in range(level, 500):
         try:
-            parse_course_page(subject, i)
+            courses.append(parse_course_page(subject, i))
         except Exception, e:
             pass
+
+    with open('%s-courses.json' % subject, 'w') as fh:
+        fh.write(json.dumps(courses))
 
 def main():
     if len(sys.argv) < 3:
@@ -105,9 +129,8 @@ def main():
     level = int(sys.argv[2])
 
     print 'Scraping catalog for subject %s starting at %s' % (subject, level)
-    print parse_course_page(subject, level)
 
-    #cycle_courses(subject, level)
+    cycle_courses(subject, level)
 
 if __name__ == '__main__':
     sys.exit(main())

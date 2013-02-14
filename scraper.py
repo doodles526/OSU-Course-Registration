@@ -117,8 +117,25 @@ def cycle_courses(subject, level):
         except Exception, e:
             pass
 
-    with open('%s-courses.json' % subject, 'w') as fh:
-        fh.write(json.dumps(courses))
+    return courses
+
+def store_courses(courses):
+    db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='', db='osu_classes')
+    cursor = db.cursor()
+
+    for course in courses:
+        course['lectures'] = None
+        course['recitations'] = None
+
+        cursor.execute("""INSERT INTO classes VALUES (
+            NULL, %(subject)s, %(level)s, %(level_format)s,
+            %(short_name)s, %(full_name)s, %(description)s
+        )""", course)
+
+    db.commit()
+
+def update_course_times(courses):
+    ""
 
 def main():
     if len(sys.argv) < 3:
@@ -129,7 +146,8 @@ def main():
 
     print 'Scraping catalog for subject %s starting at %s' % (subject, level)
 
-    cycle_courses(subject, level)
+    courses = cycle_courses(subject, level)
+    store_courses(courses)
 
 if __name__ == '__main__':
     sys.exit(main())

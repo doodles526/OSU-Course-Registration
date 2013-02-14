@@ -4,6 +4,7 @@ CREATE DATABASE `osu_classes`;
 
 CREATE TABLE `class_times` (
   `class_time_id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_id` int(11) NOT NULL,
   `term` varchar(4) NOT NULL,
   `crn` int(11) NOT NULL,
   `section` varchar(3) NOT NULL,
@@ -27,7 +28,7 @@ CREATE TABLE `class_times` (
   `final_start` datetime NOT NULL,
   `final_end` datetime NOT NULL,
   PRIMARY KEY (`class_time_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
 
 CREATE TABLE `classes` (
   `class_id` int(11) NOT NULL AUTO_INCREMENT,

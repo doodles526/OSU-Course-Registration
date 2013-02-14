@@ -46,6 +46,51 @@ def parse_course_page(subject, level):
     info['description'] = content[h3 + 5 : content.find('<br />', h3)].strip()
     info['description'] = re.sub('(?:<span.+[^(?:</span>)]*</span>)|(?:\s{2,})', ' ', info['description'])
 
+    course_table = soup.find(attrs={'id':'ctl00_ContentPlaceHolder1_SOCListUC1_gvOfferings'})
+
+    lectures = []
+    recitations = []
+
+    for tr in course_table.find_all('tr'):
+        cols = tr.find_all('td')
+
+        if len(cols) == 0:
+            continue
+
+        time = {}
+        time['term'] = cols[0].text
+        time['crn'] = int(cols[1].text)
+        time['section'] = int(cols[2].text)
+        time['instructor'] = cols[5].text
+
+        if cols[6].text.find('TBA') < 0:
+            time_data = cols[6].text.strip().split(' ')
+            time_hours = time_data[1][:4]
+            time['days'] = time_data[0]
+            time['time_start'] = time_data[1][:4]
+            time['time_end'] = time_data[1][5:9]
+        
+        time['location'] = cols[7].text.strip()
+        time['campus'] = cols[8].text.strip()
+        time['type'] = cols[9].text.strip()
+
+        time['cap'] = int(cols[11].text)
+        time['current'] = int(cols[12].text)
+        time['available'] = int(cols[13].text)
+        time['wl_cap'] = int(cols[14].text)
+        time['wl_current'] = int(cols[15].text)
+        time['wl_available'] = int(cols[16].text)
+        time['fees'] = cols[18].text.strip()
+        #time['restrictions'] = cols[19].text.strip()
+        time['notes'] = cols[20].text.strip()
+
+        if cols[9].text == 'Lecture':
+            lectures.append(time)
+        elif cols[9].text == 'Recitation':
+            recitations.append(time)
+
+    print lectures
+
     return info
 
 def cycle_courses(subject, level):

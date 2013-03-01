@@ -49,7 +49,7 @@ def bruteforce_pin():
         pin = str(i).rjust(6, '0')
 
         if try_pin(pin):
-            print 'Got the PIN!', 
+            print 'Got the PIN!'
             return True
         else:
             print 'PIN %s failed. Let\'s go again!' % pin

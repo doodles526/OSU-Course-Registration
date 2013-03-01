@@ -41,13 +41,19 @@ def main(args):
     switch_term('201303')
 
     if pin_required():
-        return 'ERROR: Pin is required to be entered'
+        if not args.pin is None:
+            if not try_pin(args.pin):
+                return 'ERROR: Provided invalid registration pin'
+        else:
+            return 'ERROR: Pin is required to be entered.'
+
 
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser(description='')
     arg_parser.add_argument('-u', '--username')
     arg_parser.add_argument('-p', '--password')
+    arg_parser.add_argument('-n', '--pin')
     arg_parser.add_argument('-c', '--crns')
     args = arg_parser.parse_args()
     sys.exit(main(args))

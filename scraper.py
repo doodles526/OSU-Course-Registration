@@ -1,3 +1,4 @@
+import argparse
 import MySQLdb
 import re
 import sys
@@ -111,10 +112,10 @@ def parse_course_page(subject, level):
 
     return info
 
-def cycle_courses(subject, level):
+def cycle_courses(subject, level, upper):
     courses = []
 
-    for i in range(level, 500):
+    for i in range(level, upper):
         try:
             courses.append(parse_course_page(subject, i))
         except Exception, e:
@@ -194,19 +195,22 @@ def store_courses(db, courses):
     db.commit()
 
 
-def main():
-    if len(sys.argv) < 3:
-        return 'Please pass in a class to scrape followed by a starting index for the class level'
+def main(args):
+    if args.subject is None:
+        return 'ERROR: Please specify a subject to index'
 
-    subject = sys.argv[1].upper()
-    level = int(sys.argv[2])
-
-    print 'Scraping catalog for subject %s starting at %s' % (subject, level)
+    print 'Scraping catalog for subject %s starting at %s' % (args.subject,
+                                                              args.startlevel)
 
     db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='', db='osu_classes')
 
-    courses = cycle_courses(subject, level)
+    courses = cycle_courses(args.subject, args.startlevel, args.endlevel)
     store_courses(db, courses)
 
 if __name__ == '__main__':
-    sys.exit(main())
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('-s', '--subject')
+    parser.add_argument('-l', '--startlevel', type=int, default=0)
+    parser.add_argument('-e', '--endlevel', type=int, default=499)
+    args = parser.parse_args()
+    sys.exit(main(args))

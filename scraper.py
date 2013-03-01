@@ -30,10 +30,10 @@ def parse_course_page(subject, level):
     content = read_page(URL_OSU_CATALOG % (subject, num_to_str(level)))
     soup = BeautifulSoup(content)
 
-    img_course = soup.find(alt='Course')
-
-    if img_course == None:
+    if content.find('ctl00_ContentPlaceHolder1_lblError') > -1:
         raise Exception('This is not a course')
+
+    img_course = soup.find(alt='Course')
 
     class_info = img_course.parent.text.strip().split('\n')
 

@@ -39,9 +39,9 @@ def try_pin(pin):
     url = URL_ONLINE_SERVICES + 'bwskfreg.P_CheckAltPin'
     res = req.post(url, {'pin': pin})
 
-    if res.content.find('getaltpinc NOTFOUND') < 0:
+    if res.content.find('getaltpinc NOTFOUND') > -1:
         return False
-    elif bs(res).title.text == 'Registration PIN Verification':
+    elif bs(res.content).title.text == 'Registration PIN Verification':
         return True
 
 def bruteforce_pin():

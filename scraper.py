@@ -5,13 +5,18 @@ import urllib
 import urllib2
 from bs4 import BeautifulSoup
 
-URL_OSU_CATALOG = 'http://catalog.oregonstate.edu/CourseDetail.aspx?subjectcode=%s&coursenumber=%s'
+URL_OSU_CATALOG = 'http://catalog.oregonstate.edu/CourseDetail.aspx?SubjectCode=%s&CourseNumber=%s'
 
 def num_to_str(i):
     return ('0%s' % i) if i < 100 else str(i)
 
 def read_page(url):
-    return urllib2.urlopen(url).read()
+    opener = urllib2.build_opener()
+    opener.addheaders = [
+        ("User-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11")
+    ]
+
+    return opener.open(url, None).read()
 
 def parse_course_page(subject, level):
     info = {

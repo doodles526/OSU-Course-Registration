@@ -34,6 +34,23 @@ def switch_term(term):
     soup = bs(res.content)
 
 
+def try_pin(pin):
+    """ """
+
+def bruteforce_pin():
+    for i in range(0, 999999):
+        pin = str(i).rjust(6, '0')
+
+        if try_pin(pin):
+            print 'Got the PIN!', 
+            return True
+        else:
+            print 'PIN %s failed. Let\'s go again!' % pin
+    else:
+        print 'Never figured out PIN...'
+        return False
+
+
 def main(args):
     if not login(args.username, args.password):
         return 'ERROR: Could not validate your login credentials'
@@ -45,8 +62,10 @@ def main(args):
             if not try_pin(args.pin):
                 return 'ERROR: Provided invalid registration pin'
         else:
-            return 'ERROR: Pin is required to be entered.'
+            print 'Pin is required to be entered. Attempting to bruteforce pin.'
 
+            if not bruteforce_pin():
+                return 'ERROR: Pin could not be retrieved'
 
 
 if __name__ == '__main__':

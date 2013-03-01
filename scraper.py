@@ -70,7 +70,7 @@ def parse_course_page(subject, level):
             'type': cols[9].text.strip(),
             'cap': int(cols[11].text),
             'current': int(cols[12].text),
-            'available': int(cols[13].text),
+            'available': 0 if cols[13].text.find('WL') > -1 else int(cols[13].text),
             'wl_cap': int(cols[14].text),
             'wl_current': int(cols[15].text),
             'wl_available': int(cols[16].text),

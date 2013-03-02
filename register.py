@@ -9,22 +9,26 @@ req.headers = {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,
 URL_ONLINE_SERVICES = 'https://adminfo.ucsadm.oregonstate.edu/prod/'
 
 
+def get_title(content):
+    soup = bs(content)
+    return soup.title.text
+
+
 def login(username, password):
     req.headers['Referer'] = URL_ONLINE_SERVICES + 'twbkwbis.P_WWWLogin'
     url = URL_ONLINE_SERVICES + 'twbkwbis.P_ValLogin'
     req.get(url)
     res = req.post(url, {'sid': username, 'PIN': password})
 
-    return res.content.find('WELCOME') > 0 or bs(res.content).title.text
+    return res.content.find('WELCOME') > 0 or get_title(res.content)
 
 
 def pin_required():
     req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
     url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
     res = req.get(url)
-    title = bs(res.content).title.text
 
-    return title == 'Registration PIN Verification'
+    return get_title(res.content) == 'Registration PIN Verification'
 
 
 def switch_term(term):
@@ -41,7 +45,7 @@ def try_pin(pin):
 
     if res.content.find('getaltpinc NOTFOUND') > -1:
         return False
-    elif bs(res.content).title.text == 'Registration PIN Verification':
+    elif get_title(res.content) == 'Registration PIN Verification':
         return True
 
 def bruteforce_pin():

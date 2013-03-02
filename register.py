@@ -44,7 +44,6 @@ def try_pin(pin):
     elif bs(res.content).title.text == 'Registration PIN Verification':
         return True
 
-
 def bruteforce_pin():
     for i in range(0, 999999):
         pin = str(i).rjust(6, '0')
@@ -69,18 +68,22 @@ def main(args):
         if not args.pin is None:
             if not try_pin(args.pin):
                 return 'ERROR: Provided invalid registration pin'
-        else:
+        elif args.bruteforce:
             print 'Pin is required to be entered. Attempting to bruteforce pin.'
 
             if not bruteforce_pin():
                 return 'ERROR: Pin could not be retrieved'
+        else:
+            print 'ERROR: Pin is required or you must enable --bruteforce'
 
 
 if __name__ == '__main__':
     arg_parser = argparse.ArgumentParser(description='')
     arg_parser.add_argument('-u', '--username')
     arg_parser.add_argument('-p', '--password')
+    arg_parser.add_argument('-b', '--bruteforce')
     arg_parser.add_argument('-n', '--pin')
     arg_parser.add_argument('-c', '--crns')
     args = arg_parser.parse_args()
+    print args.bruteforce
     sys.exit(main(args))

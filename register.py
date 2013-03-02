@@ -44,6 +44,7 @@ def try_pin(pin):
     elif bs(res.content).title.text == 'Registration PIN Verification':
         return True
 
+
 def bruteforce_pin():
     for i in range(0, 999999):
         pin = str(i).rjust(6, '0')

@@ -69,14 +69,17 @@ class Course:
             return
 
         for k, v in details.items():
+            if k in ['dropped', 'registered', 'waitlisted']:
+                continue
+
             details[k] = v.strip()
 
-        self.status = details['status'].strip()
-        self.crn = int(details['crn'].strip())
-        self.subject = details['subject'].strip()
-        self.section = details['section'].strip()
-        self.credits = float(details['credits'].strip())
-        self.title = details['title'].strip()
+        self.status = details['status']
+        self.crn = int(details['crn'])
+        self.subject = details['subject']
+        self.section = details['section']
+        self.credits = float(details['credits'])
+        self.title = details['title']
         self.dropped = details['dropped']
         self.registered = details['registered']
         self.waitlisted = details['waitlisted']

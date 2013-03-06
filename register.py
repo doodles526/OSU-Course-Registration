@@ -47,9 +47,9 @@ class Course:
         self.waitlisted = details['waitlisted']
 
     @staticmethod
-    def get_waitlisted_courses(req):
+    def get_waitlisted_courses(session):
         waitlisted = []
-        courses = Course.get_all_courses(req)
+        courses = Course.get_all_courses(session)
 
         for course in courses:
             if course.waitlisted:
@@ -58,9 +58,9 @@ class Course:
         return waitlisted
 
     @staticmethod
-    def get_dropped_courses(req):
+    def get_dropped_courses(session):
         dropped = []
-        courses = Course.get_all_courses(req)
+        courses = Course.get_all_courses(session)
 
         for course in courses:
             if course.dropped:
@@ -69,9 +69,9 @@ class Course:
         return dropped
 
     @staticmethod
-    def get_current_courses(req):
+    def get_current_courses(session):
         registered = []
-        courses = Course.get_all_courses(req)
+        courses = Course.get_all_courses(session)
 
         for course in courses:
             if course.registered:
@@ -80,10 +80,10 @@ class Course:
         return registered
 
     @staticmethod
-    def get_all_courses(req):
-        req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
+    def get_all_courses(session):
+        session.set_referer(URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm')
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
-        res = req.get(url)
+        res = session.get(url)
         soup = bs(res.content)
 
         if soup.title.text != 'Add/Drop Classes: ':

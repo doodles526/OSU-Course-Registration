@@ -115,5 +115,4 @@ if __name__ == '__main__':
     arg_parser.add_argument('-n', '--pin')
     arg_parser.add_argument('-c', '--crns')
     args = arg_parser.parse_args()
-    print args.bruteforce
     sys.exit(main(args))

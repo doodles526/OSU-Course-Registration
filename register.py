@@ -98,14 +98,14 @@ class Course:
             if len(cols) == 0:
                 continue
 
-            course = Course({'status': cols[0].text, 'crn': cols[2].text,
-                             'subject': cols[3].text, 'section': cols[5].text,
-                             'credits': cols[7].text, 'title': cols[9].text,
-                             'dropped': cols[0].text.find('Drop') > -1,
-                             'registered': cols[0].text.find('Registered') > -1,
-                             'waitlisted': cols[0].text.find('Registered') > -1})
+            c = Course({'status': cols[0].text, 'crn': cols[2].text,
+                        'subject': cols[3].text, 'section': cols[5].text,
+                        'credits': cols[7].text, 'title': cols[9].text,
+                        'dropped': cols[0].text.find('Drop') > -1,
+                        'registered': cols[0].text.find('Registered') > -1,
+                        'waitlisted': cols[0].text.find('Registered') > -1})
 
-            courses.append(course)
+            courses.append(c)
 
         return courses
 

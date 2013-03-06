@@ -77,6 +77,9 @@ def Course:
         self.section = details['section'].strip()
         self.credits = float(details['credits'].strip())
         self.title = details['title'].strip()
+        self.dropped = details['dropped']
+        self.registered = details['registered']
+        self.waitlisted = details['waitlisted']
 
     @staticmethod
     def get_waitlisted_courses(req):

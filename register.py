@@ -107,6 +107,17 @@ class Course:
         return dropped
 
     @staticmethod
+    def get_current_courses(req):
+        registered = []
+        courses = Course.get_all_courses(req)
+
+        for course in courses:
+            if course.registered:
+                registered.append(course)
+
+        return registered
+
+    @staticmethod
     def get_all_courses(req):
         req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'

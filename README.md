@@ -1,6 +1,8 @@
 OSU-Course-Registration
 =======================
 
+Please check out the license file in this project.
+
 This project has multiple pieces to it.
 
 ### Course Scraper

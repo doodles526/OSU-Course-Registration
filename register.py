@@ -50,7 +50,7 @@ def try_pin(pin):
 
 
 def bruteforce_pin():
-    for i in range(0, 999999):
+    for i in range(0, 1000000):
         pin = str(i).rjust(6, '0')
 
         if try_pin(pin):

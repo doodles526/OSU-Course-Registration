@@ -104,7 +104,7 @@ def main(args):
             if not bruteforce_pin():
                 return 'ERROR: Pin could not be retrieved'
         else:
-            print 'ERROR: Pin is required or you must enable --bruteforce'
+            return 'ERROR: Pin is required or you must enable --bruteforce'
 
 
 if __name__ == '__main__':

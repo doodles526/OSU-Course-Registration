@@ -79,6 +79,17 @@ def Course:
         self.title = details['title'].strip()
 
     @staticmethod
+    def get_waitlisted_courses(req):
+        waitlisted = []
+        courses = Course.get_all_courses(req)
+
+        for course in courses:
+            if course.waitlisted:
+                waitlisted.append(course)
+
+        return waitlisted
+
+    @staticmethod
     def get_all_courses(req):
         req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'

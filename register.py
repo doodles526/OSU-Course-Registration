@@ -79,7 +79,7 @@ def Course:
         self.title = details['title'].strip()
 
     @staticmethod
-    def get_current_courses(req):
+    def get_all_courses(req):
         req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
         res = req.get(url)

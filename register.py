@@ -124,7 +124,7 @@ class Session:
                             'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3'}
 
     def get_session(self):
-        return req
+        return self.req
 
     def set_referer(self, referer):
         self.req.headers['Referer'] = referer
@@ -174,6 +174,7 @@ def main(args):
         return 'ERROR: Could not validate your login credentials'
 
     session.switch_term(Term.get_term_string(3, 2013))
+    print Course.get_current_courses(session)
 
     if session.pin_required():
         if not args.pin is None:

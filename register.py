@@ -83,7 +83,7 @@ class Course:
     def get_all_courses(session):
         session.set_referer(URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm')
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
-        res = session.get(url)
+        res = session.get_session().get(url)
         soup = bs(res.content)
 
         if soup.title.text != 'Add/Drop Classes: ':

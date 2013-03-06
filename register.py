@@ -81,11 +81,13 @@ def get_current_courses():
         if len(cols) == 0:
             continue
 
-        courses.append({'status': cols[0].text, 'crn': cols[2].text,
-                        'subject': cols[3].text, 'section': cols[5].text,
-                        'credits': cols[6].text, 'title': cols[8].text,
-                        'registered': cols[0].text.find('Registered') > -1,
-                        'waitlisted': cols[0].text.find('Registered') > -1})
+        course = Course({'status': cols[0].text, 'crn': cols[2].text,
+                         'subject': cols[3].text, 'section': cols[5].text,
+                         'credits': cols[6].text, 'title': cols[8].text,
+                         'registered': cols[0].text.find('Registered') > -1,
+                         'waitlisted': cols[0].text.find('Registered') > -1})
+
+        courses.append(course)
 
     return courses
 

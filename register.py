@@ -63,35 +63,6 @@ def bruteforce_pin():
         return False
 
 
-def get_current_courses():
-    req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
-    url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
-    res = req.get(url)
-    soup = bs(res.content)
-
-    if soup.title.text != 'Add/Drop Classes: ':
-        return []
-
-    courses = []
-
-    course_table = soup.find('table', {'class': 'datadisplaytable'})
-    for tr in course_table.find_all('tr'):
-        cols = tr.find_all('td')
-
-        if len(cols) == 0:
-            continue
-
-        course = Course({'status': cols[0].text, 'crn': cols[2].text,
-                         'subject': cols[3].text, 'section': cols[5].text,
-                         'credits': cols[6].text, 'title': cols[8].text,
-                         'registered': cols[0].text.find('Registered') > -1,
-                         'waitlisted': cols[0].text.find('Registered') > -1})
-
-        courses.append(course)
-
-    return courses
-
-
 def Course:
     def __init__(self, details=None):
         if details is None:
@@ -106,6 +77,35 @@ def Course:
         self.section = details['section'].strip()
         self.credits = float(details['credits'].strip())
         self.title = details['title'].strip()
+
+    @staticmethod
+    def get_current_courses(req):
+        req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
+        url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'
+        res = req.get(url)
+        soup = bs(res.content)
+
+        if soup.title.text != 'Add/Drop Classes: ':
+            return []
+
+        courses = []
+
+        course_table = soup.find('table', {'class': 'datadisplaytable'})
+        for tr in course_table.find_all('tr'):
+            cols = tr.find_all('td')
+
+            if len(cols) == 0:
+                continue
+
+            course = Course({'status': cols[0].text, 'crn': cols[2].text,
+                             'subject': cols[3].text, 'section': cols[5].text,
+                             'credits': cols[6].text, 'title': cols[8].text,
+                             'registered': cols[0].text.find('Registered') > -1,
+                             'waitlisted': cols[0].text.find('Registered') > -1})
+
+            courses.append(course)
+
+        return courses
 
 
 def main(args):

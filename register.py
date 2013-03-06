@@ -161,6 +161,12 @@ class Session:
             return False
 
 
+class Term:
+    @staticmethod
+    def get_term_string(term, year):
+        return ''.join([str(year), str(term).rjust(2, '0')])
+
+
 def main(args):
     session = Session()
 

@@ -63,7 +63,7 @@ def bruteforce_pin():
         return False
 
 
-def Course:
+class Course:
     def __init__(self, details=None):
         if details is None:
             return

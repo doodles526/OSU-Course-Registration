@@ -46,6 +46,9 @@ class Course:
         self.registered = details['registered']
         self.waitlisted = details['waitlisted']
 
+    def register(self, session):
+        """"""
+
     @staticmethod
     def get_waitlisted_courses(session):
         waitlisted = []

@@ -96,6 +96,17 @@ class Course:
         return waitlisted
 
     @staticmethod
+    def get_dropped_courses(req):
+        dropped = []
+        courses = Course.get_all_courses(req)
+
+        for course in courses:
+            if course.dropped:
+                dropped.append(course)
+
+        return dropped
+
+    @staticmethod
     def get_all_courses(req):
         req.headers['Referer'] = URL_ONLINE_SERVICES + 'bwcklibs.P_StoreTerm'
         url = URL_ONLINE_SERVICES + 'bwskfreg.P_AltPin'

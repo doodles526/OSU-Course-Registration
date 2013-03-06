@@ -90,6 +90,22 @@ def get_current_courses():
     return courses
 
 
+def Course:
+    def __init__(self, details=None):
+        if details is None:
+            return
+
+        for k, v in details.items():
+            details[k] = v.strip()
+
+        self.status = details['status'].strip()
+        self.crn = int(details['crn'].strip())
+        self.subject = details['subject'].strip()
+        self.section = details['section'].strip()
+        self.credits = float(details['credits'].strip())
+        self.title = details['title'].strip()
+
+
 def main(args):
     if not login(args.username, args.password):
         return 'ERROR: Could not validate your login credentials'

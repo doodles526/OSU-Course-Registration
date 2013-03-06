@@ -49,6 +49,9 @@ class Course:
     def register(self, session):
         """"""
 
+    def drop(self, session):
+        """"""
+
     @staticmethod
     def get_waitlisted_courses(session):
         waitlisted = []

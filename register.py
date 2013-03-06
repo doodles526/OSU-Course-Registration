@@ -173,7 +173,7 @@ def main(args):
     if not session.login(args.username, args.password):
         return 'ERROR: Could not validate your login credentials'
 
-    session.switch_term('201303')
+    session.switch_term(Term.get_term_string(3, 2013))
 
     if session.pin_required():
         if not args.pin is None:

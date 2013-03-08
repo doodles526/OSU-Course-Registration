@@ -1,0 +1,16 @@
+DEPARTMENT_CODES = ('AREC', 'AED', 'AG', 'ANS', 'AEC', 'BRR', 'BOT', 'CSS', 'CROP', 'ENT', 'ENSC', 'FW', 'FST', 'HORT', 'NR', 'PBG',
+                    'RNG', 'SOIL', 'TOX', 'ACTG', 'BA', 'DHE', 'FIN', 'GD', 'MGMT', 'MRKT', 'ATS', 'EAR', 'ENSC', 'GPH', 'GEO', 'MRM',
+                    'OEAS', 'OC', 'AHE', 'SED', 'TCE', 'BEE', 'BIOE', 'CBEE', 'CHE', 'CCE', 'CE', 'CS', 'CEM', 'EECS', 'ECE', 'ENGR',
+                    'ENVE', 'IE', 'MATS', 'ME', 'MP', 'NE', 'RHP', 'FES', 'FE', 'FOR', 'FS', 'MNR', 'NR', 'SUS', 'SNR', 'WSE', 'ASL',
+                    'AMS', 'ANTH', 'ARAB', 'ART', 'CHN', 'COMM', 'ECON', 'ENG', 'ES', 'FILM', 'FLL', 'FR', 'GER', 'HEBR', 'HST', 'HSTS',
+                    'IT', 'JPN', 'LS', 'LING', 'MUS', 'MUP', 'MUED', 'NMC', 'PAX', 'PHL', 'PS', 'PSY', 'QS', 'RUS', 'SOC', 'SPAN', 'TA',
+                    'TCS', 'WS', 'WGSS', 'WR', 'PHAR', 'YDE', 'EXSS', 'HHS', 'HDFS', 'NUTR', 'PAC', 'H', 'BB', 'BI', 'CH', 'GS', 'MTH',
+                    'MB', 'MCB', 'PH', 'PSM', 'ST', 'Z', 'VMB', 'VMC', 'AS', 'MS', 'NS', 'ENSC', 'IST', 'MCB', 'WRE', 'WRP', 'WRS', 'BRR',
+                    'ENSC', 'IST', 'NR', 'PP', 'WRE', 'WRP'. 'WRS', 'INTL', 'OAAR', 'OAPI', 'OGHA', 'OAHA', 'OAKI', 'OANG', 'OANT', 'ODH1',
+                    'OATH', 'OAUC', 'OAUS', 'OBMB', 'OBWU', 'OCHU', 'OBAN', 'OCSU', 'OBLC', 'OCUN', 'OBUL', 'OUBC', 'OANU', 'OCAN', 'OMEN',
+                    'OPAY', 'OBIO', 'OCBY', 'ONZC', 'OCIE', 'OCBS', 'OTEC', 'ODUB', 'ODH2', 'OFEZ', 'OFIJ', 'OSAC', 'OCHK', 'OINT', 'OMAM',
+                    'OIRE', 'OJYV', 'OIND', 'OYEU', 'OAGD', 'OLAN', 'OAIU', 'OLON', 'OLUL', 'OLUN', 'ODTU', 'OLYO', 'OMAC', 'OMOR', 'ONTU',
+                    'ONOT', 'OOVD', 'OPET', 'OPOI', 'OUDL', 'OUSF', 'OQUI', 'OROS', 'ORUS', 'OSAR', 'OSCA', 'OSFS', 'OSIT', 'OSEG', 'OEWH',
+                    'OYON', 'OSIE', 'OSIN', 'OPRE', 'OSTE', 'ODEA', 'OSUS', 'OSYD', 'OUMA', 'OUTS', 'OFJU', 'OFJX', 'OAGU', 'OWAS', 'OJCU',
+                    'OSIP', 'OTUN', 'OCOR', 'OLIM', 'OSHF', 'OSAB', 'OVIE', 'OVUE', 'HC' 
+                    )

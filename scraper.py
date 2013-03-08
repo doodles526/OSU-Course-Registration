@@ -19,6 +19,25 @@ def read_page(url):
 
     return opener.open(url, None).read()
 
+def find_all_courses():
+    URL = 'http://catalog.oregonstate.edu/SOCSearcher.aspx?wks=&chr=abcder'
+    content = read_page(URL)
+    soup = BeautifulSoup(content)
+
+    all_courses = soup.find(id="ctl00_ContentPlaceHolder1_gvResults")
+    all_courses = all_courses.findAll('a', href=True)    
+    formated_courses = set()
+    for course in all_courses:
+        href =  "http://catalog.oregonstate.edu" + course['href']
+        shortname = course.text.split('-')[0].strip().split()[0] + course.text.split('-')[0].strip().split()[1]
+        fullname = course.text.split('-')[1].strip().split('[')[0]
+        formated_courses.add((shortname, fullname, href))
+    
+    return formated_courses 
+
+    
+
+
 def parse_course_page(subject, level):
     info = {
         'short_name': '%s%i' % (subject, level),

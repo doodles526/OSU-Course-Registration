@@ -86,8 +86,9 @@ def parse_course_page(subject, level):
             lfont = str(cols[7].find('font'))
             lfont = lfont[17:len(lfont) - 7].strip().split('<br/><br/>')
 
-            time_data = tfont[0].split(' ')
-            time_hours = time_data[1]
+     ###This is broken, need to fix the parsing algorthim above.  also needs to account for multiple meeting times see ph424 as example
+    ###means we need to change this to a many-many relationship withing our db
+            time_data = cols[6].text.split() 
             time['days'] = time_data[0]
             time['time_start'] = time_data[1][:4]
             time['time_end'] = time_data[1][5:9]

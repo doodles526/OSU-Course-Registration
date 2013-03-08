@@ -30,7 +30,8 @@ class CourseInstance(db.Model):
 
     #used if this is a lab/recitation
     parent_crn = db.Column(db.Integer(), db.ForeignKey('course_instances.crn'))
-    
+
+    location = db.Column(db.Integer(), nullable = False)    
     instructor = db.Column(db.String(), nullable = False)
     days = db.Column(db.String(), nullable = False)
     time_start = db.Column(db.String(4), nullable = False)

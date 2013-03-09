@@ -19,7 +19,7 @@ def read_page(url):
 
     return opener.open(url, None).read()
 
-def find_all_courses():
+def find_all_course_basic():
     URL = 'http://catalog.oregonstate.edu/SOCSearcher.aspx?wks=&chr=abcder'
     content = read_page(URL)
     soup = BeautifulSoup(content)
@@ -40,7 +40,7 @@ def find_all_courses():
     
 
 
-def parse_course_page(subject, level):
+def parse_course_page(subject, level, url=None):
     info = {
         'short_name': '%s%i' % (subject, level),
         'level': level,
@@ -49,7 +49,10 @@ def parse_course_page(subject, level):
         'times': []
     }
 
-    content = read_page(URL_OSU_CATALOG % (subject, num_to_str(level)))
+    if url:
+        content = read_page(url)
+    else:
+        content = read_page(URL_OSU_CATALOG % (subject, num_to_str(level)))
     soup = BeautifulSoup(content)
 
     if content.find('ctl00_ContentPlaceHolder1_lblError') > -1:

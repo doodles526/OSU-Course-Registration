@@ -33,9 +33,6 @@ class CourseInstance(db.Model):
 
     location = db.Column(db.Integer(), nullable = False)    
     instructor = db.Column(db.String(), nullable = False)
-    days = db.Column(db.String(), nullable = False)
-    time_start = db.Column(db.String(4), nullable = False)
-    time_end = db.Column(db.String(4), nullable = False)
     campus = db.Column(db.String(), nullable = False)
     pass_nopass = db.Column(db.Boolean)
     type = db.Column(db.String())
@@ -56,9 +53,6 @@ class CourseInstance(db.Model):
         self.section = kwargs['section']
         self.parent_crn = kwargs['parent_crn']
         self.instructor = kwargs['instructor']
-        self.days = kwargs['days']
-        self.time_start = kwargs['time_start']
-        self.time_end = kwargs['time_end']
         self.campus = kwargs['campus']
         self.pass_nopass = kwargs['pass_nopass']
         self.type = kwargs['type']
@@ -69,3 +63,13 @@ class CourseInstance(db.Model):
         self.fees = kwargs['fees']
         self.restrictions = kwargs['restrictions']
         self.comments = kwargs['comments']
+
+class Meeting(db.Model):
+    id = db.Column(db.Integer, primary=True)
+    crn = db.Column(db.Integer(), db.ForeignKey('course_instances.crn'))
+    start_time = db.Column(db.String(4), nullable = False)
+    end_time = db.Column(db.String(4), nullable = False)
+    start_date = db.Column(db.Datetime(), nullable = False)
+    end_date = db.Column(db.Datetime(), nullable = False)
+    location = db.Column(db.String(), nullable = False)
+    days = db.Column(db.String(), nullable = False)

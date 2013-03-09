@@ -27,11 +27,13 @@ def find_all_courses():
     all_courses = soup.find(id="ctl00_ContentPlaceHolder1_gvResults")
     all_courses = all_courses.findAll('a', href=True)    
     formated_courses = set()
+ ###Need to add a strip to get rid of term token in url   
     for course in all_courses:
         href =  "http://catalog.oregonstate.edu" + course['href']
+        term_stripped_href = re.sub(r'&term=\d+', '', href)
         shortname = course.text.split('-')[0].strip().split()[0] + course.text.split('-')[0].strip().split()[1]
         fullname = course.text.split('-')[1].strip().split('[')[0]
-        formated_courses.add((shortname, fullname, href))
+        formated_courses.add((shortname, fullname, term_stripped_href))
     
     return formated_courses 
 

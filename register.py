@@ -11,20 +11,6 @@ def get_title(content):
     return soup.title.text
 
 
-def bruteforce_pin(session):
-    for i in range(0, 1000000):
-        pin = str(i).rjust(6, '0')
-
-        if session.try_pin(pin):
-            print 'Got the PIN!'
-            return True
-        else:
-            print 'PIN %s failed. Let\'s go again!' % pin
-    else:
-        print 'Never figured out PIN...'
-        return False
-
-
 class Course:
     def __init__(self, details=None):
         if details is None:

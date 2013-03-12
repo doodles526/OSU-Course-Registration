@@ -32,4 +32,3 @@ If you do not have your pin number yet use the following template.
 
 ```password``` is your GAP or your ONID password
 
-```--bruteforce``` means that the program will try every possible pin from 000000 to 999999. This will take a _very_ long time!

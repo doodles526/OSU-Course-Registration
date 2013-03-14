@@ -172,11 +172,6 @@ def main(args):
         if not args.pin is None:
             if not session.try_pin(args.pin):
                 return 'ERROR: Provided invalid registration pin'
-        elif args.bruteforce:
-            if not bruteforce_pin(session):
-                return 'ERROR: Pin could not be retrieved'
-        else:
-            return 'ERROR: Pin is required or you must enable --bruteforce'
 
 
 if __name__ == '__main__':

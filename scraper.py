@@ -105,29 +105,40 @@ def parse_course_page(subject, level, url=None):
         }
 
         if cols[6].text.find('TBA') < 0:
-            tfont = str(cols[6].find('font'))
-            tfont = tfont[17:len(tfont) - 7].strip().split('<br/>')
-            lfont = str(cols[7].find('font'))
-            lfont = lfont[17:len(lfont) - 7].strip().split('<br/><br/>')
+            time_data = cols[6].prettify()
+            #used so we can split on <br/> as with text, the regex will not work for all situations
+            raw_location_data = cols[7].prettify()
+            meetings = list()
+            
+            #times = re.findall(r'[a-zA-Z]+\s\d+-\d+/\d+/\d+-\d+/\d+/\d+', time_data)
+            #times += re.findall(r'[a-zA-Z]+\s\d+-\d+/\d+/\d+[^-]', time_data)#covers the possibilty of a class being on just one day
+            
+            #data now split.  will use regex in times loop to strip important details
+            times = time_data.split('<br/>')
 
-     ###This is broken, need to fix the parsing algorthim above.  also needs to account for multiple meeting times see ph424 as example
-    ###means we need to change this to a many-many relationship withing our db
-            time_data = cols[6].text.split() 
-            time['days'] = time_data[0]
-            time['time_start'] = time_data[1][:4]
-            time['time_end'] = time_data[1][5:9]
+            for timep1 in times:
+                timep2 = times.__iter__().next()
+                print timep1
+                time_instance = dict()
+                time_instance['days'] = re.search(r'\w+', time).group()
+                hours = re.findall(r'\d\d\d\d', time)
+                
+                time_instance['time_start'] = hours[0]
+                time_instance['time_end'] = hours[1]
+                date = re.sub(r'\w+\s\d+-\d\d\d\d', '', time)
+                time_instance['start_date'] = date.split('-')[0]
+                if date.split('-')[1]:
+                    time_instance['end_date'] = date.split('-')[1]
+                meetings.append(time_instance)
+            
+            split_location_data = raw_location_data.split('<br/>')
+            locations = list()
+            for location in split_location_data:
+                locations.append(re.findall(r'[A-Z]+\s[0-9]+'))
 
-            if 'GRP MID' in lfont:
-                time['midterm'] = {
-                    'time': tfont[2 * lfont.index('GRP MID')][2:],
-                    'date': tfont[2 * lfont.index('GRP MID') + 1]
-                }
+            for i in xrange(len(meetings)):
+                meeting[i]['location'] = locations[i]
 
-            if 'GRP FNL' in lfont:
-                time['final'] = {
-                    'time': tfont[2 * lfont.index('GRP FNL')][2:],
-                    'date': tfont[2 * lfont.index('GRP FNL') + 1]
-                }
         else:
             time['days'] = 'TBA'
             time['time_start'] = '0000'

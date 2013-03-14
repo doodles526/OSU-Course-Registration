@@ -65,11 +65,12 @@ class CourseInstance(db.Model):
         self.comments = kwargs['comments']
 
 class Meeting(db.Model):
+    __tablename__ = 'meetings'
     id = db.Column(db.Integer, primary=True)
     crn = db.Column(db.Integer(), db.ForeignKey('course_instances.crn'))
     start_time = db.Column(db.String(4), nullable = False)
     end_time = db.Column(db.String(4), nullable = False)
     start_date = db.Column(db.Datetime(), nullable = False)
-    end_date = db.Column(db.Datetime(), nullable = False)
+    end_date = db.Column(db.Datetime())
     location = db.Column(db.String(), nullable = False)
     days = db.Column(db.String(), nullable = False)
